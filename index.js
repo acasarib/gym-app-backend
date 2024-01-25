@@ -30,7 +30,7 @@ app.use(express.json()); //sirve para tratar el body del post si viene por json
 })*/
 
 const options = {
-    origin: ['https://gym-routines-p1j0unboe-acasarib.vercel.app', 'http://localhost:3000'],
+    origin: ['https://gym-routines-app.vercel.app', 'http://localhost:3000'],
 }
 app.use(cors(options))
 
