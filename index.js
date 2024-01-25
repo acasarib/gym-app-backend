@@ -10,7 +10,6 @@ const AppError = require('./AppError');
 const companiesRoutes = require('./routes/companies');
 const userRoutes = require('./routes/user');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const db_url = process.env.MONGO_URI;
 
 app.use(session({secret: 'notagoodsecret'}))
