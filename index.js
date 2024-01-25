@@ -13,6 +13,7 @@ const session = require('express-session');
 const db_url = process.env.MONGO_URI;
 
 app.use(session({secret: 'notagoodsecret'}))
+mongoose.set('strictQuery', true)
 app.use(express.json()); //sirve para tratar el body del post si viene por json
 /*app.use((req, res, next) => {
     try{
@@ -39,7 +40,7 @@ app.use('/user', userRoutes);
 main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
 
 async function main() {
-  await mongoose.connect(db_url);
+  await mongoose.connect(db_url, {useUnifiedTopology: true, useNewUrlParser: true});
   console.log('Mongoose open');
   //'mongodb://127.0.0.1:27017/gymRoutinesApp'
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
