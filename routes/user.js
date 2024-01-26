@@ -33,7 +33,8 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         const user = {
             username,
             password: hash
-        } 
+        }
+        if(req.body.email) user.email = req.body.email;
         const newUser = new User(user);
         const savedUser = await newUser.save();
         const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
