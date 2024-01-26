@@ -46,7 +46,7 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         res.send({result: 'Succesfully saved!', accessToken});
         
     }else {
-        throw new AppError('Username already exists!', 401);
+        res.status(401).send({message: 'Username already exists!' });
     }
 }))
 
@@ -54,7 +54,7 @@ router.post('/login', wrapAsync(async (req, res, next) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if(!user) {
-        throw new AppError('Incorrect username or password!', 401);
+        res.status(401).send({message: 'Incorrect username or password!' });
     }else {
         const validPass = await bcrypt.compare(password, user.password);
         if(validPass) {
@@ -70,7 +70,7 @@ router.post('/login', wrapAsync(async (req, res, next) => {
             console.log(accessToken)
             res.status(200).send({message: 'Succesfully logged in!', accessToken });
         }else {
-            throw new AppError('Incorrect username or password!', 401);
+            res.status(401).send({message: 'Incorrect username or password!' });
         }
     }
 }))
