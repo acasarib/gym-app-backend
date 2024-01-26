@@ -27,15 +27,27 @@ router.get('/', async (req, res) => {
 router.post('/register', wrapAsync(async (req, res, next) => {
     console.log(req.body);
     const { username, password } = req.body;
-    const hash = await hashPassword(password);
-    const user = {
-        username,
-        password: hash
-    } 
-    const newUser = new User(user);
-    await newUser.save();
-    req.session.user_id = user._id;
-    res.send('Succesfully saved!' + newUser);
+    const findUser = await User.findOne({ username });
+    if(!findUser) {
+        const hash = await hashPassword(password);
+        const user = {
+            username,
+            password: hash
+        } 
+        const newUser = new User(user);
+        const savedUser = await newUser.save();
+        const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
+        const accessToken = jwt.sign({
+            sub, 
+            newUsername,
+            exp: Date.now() + 60 * 1000
+        }, secret);
+        req.session.user_id = user._id;
+        res.send({result: 'Succesfully saved!', accessToken});
+        
+    }else {
+        throw new AppError('Username already exists!', 401);
+    }
 }))
 
 router.post('/login', wrapAsync(async (req, res, next) => {
@@ -46,10 +58,17 @@ router.post('/login', wrapAsync(async (req, res, next) => {
     }else {
         const validPass = await bcrypt.compare(password, user.password);
         if(validPass) {
+            const {id: sub, username} =  { id: user._id, username: user.username };
+            const accessToken = jwt.sign({
+                sub, 
+                username,
+                exp: Date.now() + 60 * 1000
+            }, secret);
             console.log('logged in!!');
             //const token = twl.sign({id: sub, username: user.username, exp: Date.now() + 60 * 1000}, secret)
             req.session.user_id = user._id;
-            res.status(200).send('Succesfully logged in!');
+            console.log(accessToken)
+            res.status(200).send({message: 'Succesfully logged in!', accessToken });
         }else {
             throw new AppError('Incorrect username or password!', 401);
         }
