@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
         type: Number,
         required: false
     },
-    heigth: {
+    height: {
         type: Number,
         required: false
     },
