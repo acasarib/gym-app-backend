@@ -33,8 +33,9 @@ app.use((req, res, next) => {
                 console.log('por que no funciona????')
                 res.status(401).send({message: 'Unauthorized'});
             }
+        }else {
+            next();
         }
-        next();
     }catch(err) {
         res.status(401).send({error: err.message});
     }
