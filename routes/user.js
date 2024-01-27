@@ -20,7 +20,7 @@ const hashPassword = async (pass) => {
 
 router.get('/', async (req, res) => {
     const users = await User.find({});
-    const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || '', height: user.height || '', email: user.email || '' }));
+    const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '' }));
     console.log(`Date: ${req.requestTime}`);
     res.send(filteredUsersData);
 })
@@ -36,6 +36,8 @@ router.post('/register', wrapAsync(async (req, res, next) => {
             password: hash
         }
         if(req.body.email) user.email = req.body.email;
+        if(req.body.weight) user.weight = req.body.weight;
+        if(req.body.height) user.height = req.body.height;
         const newUser = new User(user);
         const savedUser = await newUser.save();
         const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
