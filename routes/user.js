@@ -20,7 +20,7 @@ const hashPassword = async (pass) => {
 
 router.get('/', async (req, res) => {
     const users = await User.find({});
-    const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '' }));
+    const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id }));
     console.log(`Date: ${req.requestTime}`);
     res.send(filteredUsersData);
 })
