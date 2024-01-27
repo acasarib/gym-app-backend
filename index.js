@@ -22,7 +22,7 @@ const options = {
 }
 app.use(cors(options))
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const payload = jwt.verify(token, secret);
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
     }catch(err) {
         res.status(401).send({error: err.message});
     }
-})
+})*/
 
 app.use('/companies', companiesRoutes);
 app.use('/user', userRoutes);
