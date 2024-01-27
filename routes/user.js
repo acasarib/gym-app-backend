@@ -71,7 +71,6 @@ router.post('/login', wrapAsync(async (req, res, next) => {
             console.log('logged in!!');
             //const token = twl.sign({id: sub, username: user.username, exp: Date.now() + 60 * 1000}, secret)
             req.session.user_id = user._id;
-            console.log(accessToken)
             res.status(200).send({message: 'Succesfully logged in!', accessToken });
         }else {
             res.status(401).send({message: 'Incorrect username or password!' });
