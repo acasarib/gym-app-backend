@@ -23,6 +23,7 @@ app.use((req, res, next) => {
             if(Date.now() > payload.exp) {
                 next();
             }else {
+                console.log('por que no funciona????')
                 res.status(401).send({message: 'Unauthorized'});
             }
         }
