@@ -20,8 +20,9 @@ const hashPassword = async (pass) => {
 
 router.get('/', async (req, res) => {
     const users = await User.find({});
+    const filteredUsersData = users.map(user => ({ username: user.username }));
     console.log(`Date: ${req.requestTime}`);
-    res.send(users);
+    res.send(filteredUsersData);
 })
 
 router.post('/register', wrapAsync(async (req, res, next) => {

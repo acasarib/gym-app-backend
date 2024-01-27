@@ -9,6 +9,18 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Password is reuired']
     },
+    weight: {
+        type: Number,
+        required: false
+    },
+    heigth: {
+        type: Number,
+        required: false
+    },
+    email: {
+        type: String,
+        required: false
+    }
 })
 
 const User = mongoose.model('User', userSchema);
