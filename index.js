@@ -23,11 +23,11 @@ app.use((req, res, next) => {
             if(Date.now() > payload.exp) {
                 next();
             }else {
-                res.status(401).send({error: 'Unauthorized'});
+                res.status(401).send({message: 'Unauthorized'});
             }
         }
     }catch(err) {
-        res.status(401).send({error: error.message});
+        res.status(401).send({error: err.message});
     }
 })
 
