@@ -15,19 +15,21 @@ const db_url = process.env.MONGO_URI;
 app.use(session({secret: 'notagoodsecret'}))
 mongoose.set('strictQuery', true)
 app.use(express.json()); //sirve para tratar el body del post si viene por json
-/*app.use((req, res, next) => {
+app.use((req, res, next) => {
     try{
         const token = req.headers.authorization.split(" ")[1];
         const payload = jwt.verify(token, secret);
-        if(Date.now() > payload.exp) {
-            res.send('Accediste');
-        }else {
-            res.status(401).send({error: 'Unauthorized'});
+        if (req.path !== '/user/login' && req.path !== '/user/register') {
+            if(Date.now() > payload.exp) {
+                next();
+            }else {
+                res.status(401).send({error: 'Unauthorized'});
+            }
         }
     }catch(err) {
         res.status(401).send({error: error.message});
     }
-})*/
+})
 
 const options = {
     origin: ['https://gym-routines-app.vercel.app', 'http://localhost:3000'],
