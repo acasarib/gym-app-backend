@@ -41,10 +41,13 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         const newUser = new User(user);
         const savedUser = await newUser.save();
         const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
+        const currentDate = new Date();
+        const milisecondsHours = 60 * 60 * 1000;
+        const newDate = new Date(currentDate.getTime() + milisecondsHours);
         const accessToken = jwt.sign({
             sub, 
             newUsername,
-            exp: Date.now() + 60 * 1000
+            exp: newDate
         }, secret);
         req.session.user_id = user._id;
         res.send({result: 'Succesfully saved!', accessToken});
