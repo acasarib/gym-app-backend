@@ -29,8 +29,10 @@ app.use((req, res, next) => {
             const token = req.headers.authorization.split(" ")[1];
             const payload = jwt.verify(token, secret);
             if(payload && (Date.now() < payload.exp)) {
+                console.log('autorizado');
                 return next();
             }else {
+                console.log('no autorizado');
                 res.status(401).send({message: 'Unauthorized'});
             }
         }catch(err) {
