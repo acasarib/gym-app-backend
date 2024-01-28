@@ -12,6 +12,7 @@ const userRoutes = require('./routes/user');
 const session = require('express-session');
 const db_url = process.env.MONGO_URI;
 const secret = process.env.secret;
+const jwt = require('jsonwebtoken');
 
 app.use(session({secret: 'notagoodsecret'}))
 mongoose.set('strictQuery', true)
@@ -22,26 +23,26 @@ const options = {
 }
 app.use(cors(options))
 
-app.use('/companies', companiesRoutes);
-app.use('/user', userRoutes);
-
 app.use((req, res, next) => {
-    try{
-        const token = req.headers.authorization.split(" ")[1];
-        const payload = jwt.verify(token, secret);
-        if (req.path !== '/user/login' && req.path !== '/user/register') {
-            if(Date.now() > payload.exp) {
-                next();
+    if (req.path !== '/user/login' && req.path !== '/user/register') {
+        try{
+            const token = req.headers.authorization.split(" ")[1];
+            const payload = jwt.verify(token, secret);
+            if(payload && (Date.now() < payload.exp)) {
+                return next();
             }else {
                 res.status(401).send({message: 'Unauthorized'});
             }
-        }else {
-            next();
+        }catch(err) {
+            res.status(401).send({error: err.message});
         }
-    }catch(err) {
-        res.status(401).send({error: err.message});
+    }else {
+       return next();
     }
 })
+
+app.use('/companies', companiesRoutes);
+app.use('/user', userRoutes);
 
 main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
 
@@ -74,6 +75,7 @@ app.use((req, res, next) => {
     console.log('Incoming request!');
     return next(); //next sera obligatorio para continuar el proceso e intentar matchear con una ruta. el return culmina la ejecucion, por lo  que despues pasara al siguiente middleware si o si.
 })
+
 //los middlewares se pueden personalizar solo para una ruta especifica aclarandola como primer parametro y segundo el callback
 
 app.use(express.urlencoded({ extended: true })); //sirve para tratar el body del post si viene por form
