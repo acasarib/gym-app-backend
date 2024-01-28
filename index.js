@@ -11,8 +11,8 @@ const companiesRoutes = require('./routes/companies');
 const userRoutes = require('./routes/user');
 const session = require('express-session');
 const db_url = process.env.MONGO_URI;
-const secret = process.env.secret;
-const jwt = require('jsonwebtoken');
+//const secret = process.env.secret;
+//const jwt = require('jsonwebtoken');
 
 app.use(session({secret: 'notagoodsecret'}))
 mongoose.set('strictQuery', true)
@@ -23,7 +23,7 @@ const options = {
 }
 app.use(cors(options))
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     if (req.path !== '/user/login' && req.path !== '/user/register') {
         try{
             const token = req.headers.authorization.split(" ")[1];
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
     }else {
        return next();
     }
-})
+})*/
 
 app.use('/companies', companiesRoutes);
 app.use('/user', userRoutes);
