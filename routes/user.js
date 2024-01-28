@@ -42,12 +42,12 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         const savedUser = await newUser.save();
         const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
         const currentDate = new Date();
-        const milisecondsHours = 60 * 60 * 1000;
-        const newDate = new Date(currentDate.getTime() + milisecondsHours);
+        const expirationDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // 1 hora en milisegundos
+        const timestampInSeconds = Math.floor(expirationDate.getTime() / 1000); // Convertir a segundos
         const accessToken = jwt.sign({
             sub, 
             newUsername,
-            exp: newDate
+            exp: timestampInSeconds
         }, secret);
         req.session.user_id = user._id;
         res.send({result: 'Succesfully saved!', accessToken});
