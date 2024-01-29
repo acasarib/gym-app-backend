@@ -27,7 +27,7 @@
 
     router.post('/register', wrapAsync(async (req, res, next) => {
         console.log(req.body);
-        const { username, password } = req.body;
+        const { username, password, firstName, lastName } = req.body;
         const findUser = await User.findOne({ username });
         if(!findUser) {
             const hash = await hashPassword(password);
