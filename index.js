@@ -11,6 +11,7 @@
     const userRoutes = require('./routes/user');
     const session = require('express-session');
     const db_url = process.env.MONGO_URI;
+    
     const secret = process.env.secret;
     const jwt = require('jsonwebtoken');
 
