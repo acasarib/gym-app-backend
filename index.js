@@ -47,7 +47,7 @@ app.use('/user', userRoutes);
 main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/gymRoutinesApp');
+  await mongoose.connect(db_url);
   console.log('Mongoose open');
   //'mongodb://127.0.0.1:27017/gymRoutinesApp'
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
