@@ -20,7 +20,7 @@
 
     router.get('/', async (req, res) => {
         const users = await User.find({});
-        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id }));
+        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '' }));
         console.log(`Date: ${req.requestTime}`);
         res.send(filteredUsersData);
     })
