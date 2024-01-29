@@ -39,18 +39,9 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         if(req.body.weight) user.weight = req.body.weight;
         if(req.body.height) user.height = req.body.height;
         const newUser = new User(user);
-        const savedUser = await newUser.save();
-        const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
-        const currentDate = new Date();
-        const expirationDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // 1 hora en milisegundos
-        const timestampInSeconds = expirationDate.getTime(); // Convertir a segundos
-        const accessToken = jwt.sign({
-            sub, 
-            newUsername,
-            exp: timestampInSeconds
-        }, secret);
+        await newUser.save();
         req.session.user_id = user._id;
-        res.send({result: 'Succesfully saved!', accessToken});
+        res.send({result: 'Succesfully saved!'});
         
     }else {
         res.status(401).send({message: 'Username already exists!' });

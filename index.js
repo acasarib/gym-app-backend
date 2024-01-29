@@ -24,7 +24,7 @@ const options = {
 app.use(cors(options))
 
 app.use((req, res, next) => {
-    if (req.path !== '/user/login' && req.path !== '/user/register') {
+    if (req.path !== '/user/login') {
         try{
             const token = req.headers.authorization.split(" ")[1];
             const payload = jwt.verify(token, secret);
