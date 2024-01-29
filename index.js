@@ -11,8 +11,8 @@ const companiesRoutes = require('./routes/companies');
 const userRoutes = require('./routes/user');
 const session = require('express-session');
 const db_url = process.env.MONGO_URI;
-//const secret = process.env.secret;
-//const jwt = require('jsonwebtoken');
+const secret = process.env.secret;
+const jwt = require('jsonwebtoken');
 
 app.use(session({secret: 'notagoodsecret'}))
 mongoose.set('strictQuery', true)
@@ -23,16 +23,14 @@ const options = {
 }
 app.use(cors(options))
 
-/*app.use((req, res, next) => {
+app.use((req, res, next) => {
     if (req.path !== '/user/login' && req.path !== '/user/register') {
         try{
             const token = req.headers.authorization.split(" ")[1];
             const payload = jwt.verify(token, secret);
-            if(payload && (payload.exp > Math.floor(Date.now() / 1000))) {
-                console.log('autorizado');
+            if(payload && (payload.exp > Date.now())) {
                 return next();
             }else {
-                console.log('no autorizado');
                 res.status(401).send({message: 'Unauthorized'});
             }
         }catch(err) {
@@ -41,7 +39,7 @@ app.use(cors(options))
     }else {
        return next();
     }
-})*/
+})
 
 app.use('/companies', companiesRoutes);
 app.use('/user', userRoutes);
@@ -49,7 +47,7 @@ app.use('/user', userRoutes);
 main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
 
 async function main() {
-  await mongoose.connect(db_url);
+  await mongoose.connect('mongodb://127.0.0.1:27017/gymRoutinesApp');
   console.log('Mongoose open');
   //'mongodb://127.0.0.1:27017/gymRoutinesApp'
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled

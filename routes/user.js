@@ -43,7 +43,7 @@ router.post('/register', wrapAsync(async (req, res, next) => {
         const {id: sub, newUsername} =  { id: savedUser._id, newUsername: savedUser.username };
         const currentDate = new Date();
         const expirationDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // 1 hora en milisegundos
-        const timestampInSeconds = Math.floor(expirationDate.getTime() / 1000); // Convertir a segundos
+        const timestampInSeconds = expirationDate.getTime(); // Convertir a segundos
         const accessToken = jwt.sign({
             sub, 
             newUsername,
@@ -66,10 +66,13 @@ router.post('/login', wrapAsync(async (req, res, next) => {
         const validPass = await bcrypt.compare(password, user.password);
         if(validPass) {
             const {id: sub, username} =  { id: user._id, username: user.username };
+            const currentDate = new Date();
+            const expirationDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // 1 hora en milisegundos
+            const timestampInSeconds = expirationDate.getTime(); // Convertir a segundos
             const accessToken = jwt.sign({
                 sub, 
                 username,
-                exp: Date.now() + 60 * 1000
+                exp: timestampInSeconds
             }, secret);
             console.log('logged in!!');
             //const token = twl.sign({id: sub, username: user.username, exp: Date.now() + 60 * 1000}, secret)
