@@ -13,7 +13,7 @@
     const db_url = process.env.MONGO_URI;
 
     const jwt = require('jsonwebtoken');
-    const secret = process.env.secret;
+    const secret = process.env.SECRET;
 
     app.use(session({secret: 'notagoodsecret'}))
     mongoose.set('strictQuery', true)
@@ -29,13 +29,12 @@
             try{
                 const token = req.headers.authorization.split(" ")[1];
                 const payload = jwt.verify(token, secret);
-                console.log(payload);
-                /*if(payload && (payload.exp > Date.now())) {
+                if(payload && (payload.exp > Date.now())) {
                     console.log('success', new Date(payload.exp), new Date(Date.now()))
                     next();
                 }else {
                     res.status(401).send({message: 'Unauthorized'});
-                }*/
+                }
                 next();
             }catch(err) {
                 res.status(401).send({error: err.message});
