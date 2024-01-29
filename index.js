@@ -12,8 +12,8 @@
     const session = require('express-session');
     const db_url = process.env.MONGO_URI;
 
-    const secret = process.env.secret;
     const jwt = require('jsonwebtoken');
+    const secret = process.env.secret;
 
     app.use(session({secret: 'notagoodsecret'}))
     mongoose.set('strictQuery', true)
