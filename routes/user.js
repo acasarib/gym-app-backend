@@ -33,6 +33,8 @@
             const hash = await hashPassword(password);
             const user = {
                 username,
+                firstName,
+                lastName,
                 password: hash
             }
             if(req.body.email) user.email = req.body.email;

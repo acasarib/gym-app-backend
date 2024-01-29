@@ -5,6 +5,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Username is reuired']
     },
+    firstName: {
+        type: String,
+        required: [true, 'Name is reuired']
+    },
+    lastName: {
+        type: String,
+        required: [true, 'Lastname is reuired']
+    },
     password: {
         type: String,
         required: [true, 'Password is reuired']
