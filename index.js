@@ -35,7 +35,6 @@
                 }else {
                     res.status(401).send({message: 'Unauthorized'});
                 }
-                next();
             }catch(err) {
                 res.status(401).send({error: err.message});
             }
