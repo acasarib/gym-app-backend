@@ -127,6 +127,6 @@
         next(err);
     })
 
-    app.listen(8080, () => {
-        console.log('Listening on port 8080!!!');
+    app.listen(6069, () => {
+        console.log('Listening on port 6069!!!');
     })
