@@ -91,15 +91,11 @@
     }))
 
     // la diferencia entre put y patch es que put actualiza todo 
-    router.put('/:id', async (req, res) => {
+    router.put('/:id', wrapAsync(async (req, res) => {
         const { id } = req.params;
-        try {
-            const updatedUser = await User.findByIdAndUpdate(id, req.body);
+            const updatedUser = await User.findByIdAndUpdate({ _id: id }, req.body);
             res.send(updatedUser);
-        }catch(err) {
-            res.send({message: 'It was not possible update this user.'})
-        }
-    })
+    }))
 
     router.delete('/:id', async (req, res) => {
         const { id } = req.params;
