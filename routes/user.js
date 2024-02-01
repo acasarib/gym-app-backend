@@ -93,7 +93,7 @@
     // la diferencia entre put y patch es que put actualiza todo 
     router.put('/:id', wrapAsync(async (req, res) => {
         const { id } = req.params;
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, req.body);
         res.send(updatedUser);
     }))
 
