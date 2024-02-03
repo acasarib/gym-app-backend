@@ -28,6 +28,10 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: false
+    },
+    lastPaymentDate: {
+        type: String,
+        required: false
     }
 })
 
