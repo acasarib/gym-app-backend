@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
         required: false
     },
     lastPaymentDate: {
-        type: String,
+        type: Date,
         required: false
     }
 })
