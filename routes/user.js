@@ -20,7 +20,7 @@
 
     router.get('/', async (req, res) => {
         const users = await User.find({});
-        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '' }));
+        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '', admissionDate: user.admissionDate || '' }));
         console.log(`Date: ${req.requestTime}`);
         res.send(filteredUsersData);
     })
@@ -40,6 +40,7 @@
             if(req.body.email) user.email = req.body.email;
             if(req.body.weight) user.weight = req.body.weight;
             if(req.body.height) user.height = req.body.height;
+            if(req.body.admissionDate) user.admissionDate = req.body.admissionDate;
             const newUser = new User(user);
             await newUser.save();
             req.session.user_id = user._id;

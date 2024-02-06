@@ -29,6 +29,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    admissionDate: {
+        type: Date,
+        required: false
+    },
     lastPaymentDate: {
         type: Date,
         required: false
