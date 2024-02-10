@@ -36,6 +36,14 @@ const userSchema = mongoose.Schema({
     lastPaymentDate: {
         type: Date,
         required: false
+    },
+    isAdmin: {
+        type: Boolean,
+        required: false
+    },
+    isMasterAdmin: {
+        type: Boolean,
+        required: false
     }
 })
 

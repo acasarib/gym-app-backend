@@ -20,7 +20,7 @@
 
     router.get('/', async (req, res) => {
         const users = await User.find({});
-        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '', admissionDate: user.admissionDate || '' }));
+        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '', admissionDate: user.admissionDate || '', isAdmin: user.isAdmin || false }));
         console.log(`Date: ${req.requestTime}`);
         res.send(filteredUsersData);
     })
@@ -41,6 +41,8 @@
             if(req.body.weight) user.weight = req.body.weight;
             if(req.body.height) user.height = req.body.height;
             if(req.body.admissionDate) user.admissionDate = req.body.admissionDate;
+            if(req.body.isAdmin) user.isAdmin = req.body.isAdmin;
+            if(req.body.isMasterAdmin) user.isAdmin = req.body.isMasterAdmin;
             const newUser = new User(user);
             await newUser.save();
             req.session.user_id = user._id;
@@ -66,7 +68,8 @@
                 const accessToken = jwt.sign({
                     sub, 
                     username,
-                    exp: timestampInSeconds
+                    exp: timestampInSeconds,
+                    isAdmin: user.isAdmin || false
                 }, secret);
                 console.log('logged in!!');
                 //const token = twl.sign({id: sub, username: user.username, exp: Date.now() + 60 * 1000}, secret)
