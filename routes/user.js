@@ -91,7 +91,19 @@
         if(!user) {
             throw new AppError('User not found', 404);
         }
-        res.send(user);
+        const userInfo = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            firstName: user.firstName,
+            height: user.height || 0,
+            lastName: user.lastName,
+            weight: user.weight || 0,
+            admissionDate: user.admissionDate || null,
+            isAdmin: user.isAdmin || false,
+            lastPaymentDate: user.lastPaymentDate || null
+        };
+        res.send(userInfo);
     }))
 
     // la diferencia entre put y patch es que put actualiza todo 
