@@ -26,7 +26,6 @@
     })
 
     router.post('/register', wrapAsync(async (req, res, next) => {
-        console.log(req.body);
         const { username, password, firstName, lastName } = req.body;
         const findUser = await User.findOne({ username });
         if(!findUser) {
@@ -78,6 +77,34 @@
             }else {
                 res.status(401).send({message: 'Incorrect username or password!' });
             }
+        }
+    }))
+
+    router.post('/auth', wrapAsync(async (req, res, next) => {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        if(!user) {
+            res.status(404).send({message: 'Incorrect username or password!' });
+        }else {
+            const validPass = await bcrypt.compare(password, user.password);
+            if(validPass) {
+                res.status(200).send({message: 'Succesfully authenticated!' });
+            }else {
+                res.status(404).send({message: 'Incorrect username or password!' });
+            }
+        }
+    }))
+
+    router.put('/change-pass', wrapAsync(async (req, res, next) => {
+        const { username, newPassword } = req.body;
+        const findUser = await User.findOne({ username });
+        if(findUser) {
+            const password = await hashPassword(newPassword);
+            await User.findByIdAndUpdate(findUser._id, {password});
+            res.send({result: 'Succesfully saved!'});
+            
+        }else {
+            res.status(404).send({message: 'User nor found!' });
         }
     }))
 
