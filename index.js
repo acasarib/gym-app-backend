@@ -10,6 +10,7 @@
     const companiesRoutes = require('./routes/companies');
     const userRoutes = require('./routes/user');
     const excercisesRoutes = require('./routes/excercises');
+    const pricingRoutes = require('./routes/pricing');
     const session = require('express-session');
     const db_url = process.env.MONGO_URI;
 
@@ -47,6 +48,7 @@
     app.use('/companies', companiesRoutes);
     app.use('/user', userRoutes);
     app.use('/excercises', excercisesRoutes);
+    app.use('/pricing', pricingRoutes);
 
     main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
 
