@@ -5,14 +5,24 @@ const routineSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    excercises: {
-        type: [Object],
-        required: false
-    },
+    excercises: [{
+        name: String,
+        description: String,
+        rest: Number,
+        series: Number,
+        repetitions: {
+            type: [String],
+            required: false
+        }
+    }],
     duration: {
+        type: Number,
+        required: true
+    },
+    owner: {
         type: String,
         required: false
-    },
+    }
 })
 
 const Routine = mongoose.model('Routine', routineSchema);
