@@ -13,6 +13,7 @@
     const scheduleRoutes = require('./routes/schedules');
     const pricingRoutes = require('./routes/pricing');
     const messagesRoutes = require('./routes/messages');
+    const routinesRoutes = require('./routes/routines');
     const session = require('express-session');
     const db_url = process.env.MONGO_URI;
 
@@ -53,6 +54,7 @@
     app.use('/pricing', pricingRoutes);
     app.use('/schedule', scheduleRoutes);
     app.use('/message', messagesRoutes);
+    app.use('/routine', routinesRoutes);
 
 
     main().catch(err => console.log(err, 'Errorrrrrrrrrrr'));
