@@ -25,7 +25,7 @@ const routineSchema = mongoose.Schema({
         required: false
     },
     isActive: {
-        type: String,
+        type: Boolean,
         required: false
     }
 })
