@@ -14,6 +14,7 @@ router.post('/new', wrapAsync(async (req, res, next) => {
     const { name, excercises, duration } = req.body;
         const routineToAdd = { name, excercises, duration }
         if(req.body.owner) routineToAdd.owner = req.body.owner;
+        if(req.body.isActive) routineToAdd.isActive = req.body.isActive;
         const newRoutine = new Routine(routineToAdd);
         await newRoutine.save();
         res.send({result: 'Succesfully saved!'});
@@ -22,6 +23,15 @@ router.post('/new', wrapAsync(async (req, res, next) => {
 router.get('/:id', wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const routine = await Routine.findById(id);
+    if(!routine) {
+        throw new AppError('Routine not found', 404);
+    }
+    res.send(routine);
+}))
+
+router.get('/user/:id', wrapAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const routine = await Routine.find({owner: id});
     if(!routine) {
         throw new AppError('Routine not found', 404);
     }

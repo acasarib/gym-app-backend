@@ -10,7 +10,8 @@ const routineSchema = mongoose.Schema({
         description: String,
         rest: Number,
         series: Number,
-        repetitions: {
+        repetitions: String,
+        progression: {
             type: [String],
             required: false
         }
@@ -20,6 +21,10 @@ const routineSchema = mongoose.Schema({
         required: true
     },
     owner: {
+        type: String,
+        required: false
+    },
+    isActive: {
         type: String,
         required: false
     }
