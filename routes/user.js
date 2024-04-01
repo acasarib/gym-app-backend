@@ -20,7 +20,7 @@
 
     router.get('/', async (req, res) => {
         const users = await User.find({});
-        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '', admissionDate: user.admissionDate || '', isAdmin: user.isAdmin || false }));
+        const filteredUsersData = users.map(user => ({ username: user.username, weight: user.weight || null, height: user.height || null, email: user.email || '', id: user._id, firstName: user.firstName || '', lastName: user.lastName || '', lastPaymentDate: user.lastPaymentDate || '', admissionDate: user.admissionDate || '', isAdmin: user.isAdmin || false, phoneNumber: user.phoneNumber || 0 }));
         console.log(`Date: ${req.requestTime}`);
         res.send(filteredUsersData);
     })
@@ -39,6 +39,7 @@
             if(req.body.email) user.email = req.body.email;
             if(req.body.weight) user.weight = req.body.weight;
             if(req.body.height) user.height = req.body.height;
+            if(req.body.phoneNumber) user.phoneNumber = req.body.phoneNumber;
             if(req.body.admissionDate) user.admissionDate = req.body.admissionDate;
             if(req.body.isAdmin) user.isAdmin = req.body.isAdmin;
             if(req.body.isMasterAdmin) user.isAdmin = req.body.isMasterAdmin;
@@ -77,6 +78,27 @@
             }else {
                 res.status(401).send({message: 'Incorrect username or password!' });
             }
+        }
+    }))
+
+    router.get('/message', wrapAsync(async (req, res) => {
+        const findUsers = await User.find({ isAdmin: true });
+        let ids = [];
+        if(findUsers.length > 0) {
+            findUsers.forEach(user => {
+                ids.push(user._id);
+            });
+        }
+        res.send(ids);
+    }))
+
+    router.get('/getByUsername/:username', wrapAsync(async (req, res) => {
+        const { username } = req.params;
+        const findUser = await User.find({ username });
+        if(!findUser) {
+            res.status(404).send({message: 'Incorrect username!' });
+        }else {
+            res.send(findUser);
         }
     }))
 
@@ -125,6 +147,7 @@
             firstName: user.firstName,
             height: user.height || 0,
             lastName: user.lastName,
+            phoneNumber: user.phoneNumber || 0,
             weight: user.weight || 0,
             admissionDate: user.admissionDate || null,
             isAdmin: user.isAdmin || false,
@@ -136,8 +159,13 @@
     // la diferencia entre put y patch es que put actualiza todo 
     router.put('/:id', wrapAsync(async (req, res) => {
         const { id } = req.params;
-            const updatedUser = await User.findByIdAndUpdate(id, req.body);
-            res.send(updatedUser);
+        const userInfo = req.body;
+        if(userInfo.password) {
+            const newPass = await hashPassword(userInfo.password);
+            userInfo.password = newPass;
+        }
+        const updatedUser = await User.findByIdAndUpdate(id, userInfo);
+        res.send(updatedUser);
     }))
 
     router.put('/:id/lastPayment', wrapAsync(async (req, res) => {

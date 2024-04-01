@@ -30,7 +30,7 @@
     app.use(cors(options))
 
     app.use((req, res, next) => {
-        if (req.path !== '/user/login') {
+        if ((req.path !== '/user/login') && (req.path !== '/user/message') && (req.path !== '/notification/new')) {
             try{
                 const token = req.headers.authorization.split(" ")[1];
                 const payload = jwt.verify(token, secret);
