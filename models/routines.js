@@ -8,8 +8,8 @@ const routineSchema = mongoose.Schema({
     excercises: [{
         name: String,
         description: String,
-        rest: Number,
-        series: Number,
+        rest: String,
+        series: String,
         repetitions: String,
         progression: {
             type: [String],
