@@ -63,7 +63,7 @@
             if(validPass) {
                 const {id: sub, username} =  { id: user._id, username: user.username };
                 const currentDate = new Date();
-                const expirationDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // 1 hora en milisegundos
+                const expirationDate = new Date(currentDate.getTime() + 4 * 60 * 60 * 1000); // 1 hora en milisegundos
                 const timestampInSeconds = expirationDate.getTime(); // Convertir a segundos
                 const accessToken = jwt.sign({
                     sub, 
